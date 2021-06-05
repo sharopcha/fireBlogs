@@ -18,7 +18,7 @@
           <Lock class="icon" />
         </div>
       </div>
-      <router-link class="forgot-password" :to="{ name: ForgotPassword }"
+      <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }"
         >Forgot password?</router-link
       >
       <button>Sign In</button>
