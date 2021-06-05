@@ -1,6 +1,6 @@
 <template>
   <div class="blog-card">
-    <div class="icons">
+    <div class="icons" v-show="editMode">
       <div class="icon">
         <Edit class="edit" />
       </div>
@@ -30,6 +30,11 @@
       Arrow,
       Edit,
       Trash,
+    },
+    computed: {
+      editMode() {
+        return this.$store.state.editMode;
+      },
     },
   };
 </script>
