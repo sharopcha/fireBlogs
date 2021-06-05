@@ -3,7 +3,7 @@
     <form class="login">
       <p class="login-register">
         Don't havr an account?
-        <router-link class="router-lin" :to="{ name: 'register' }"
+        <router-link class="router-lin" :to="{ name: 'Register' }"
           >Register</router-link
         >
       </p>
@@ -46,7 +46,7 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .form-wrap {
     overflow: hidden;
     display: flex;

@@ -1,9 +1,70 @@
 <template>
-  <div>register</div>
+  <div class="form-wrap">
+    <form class="register">
+      <p class="login-register">
+        Already have an account?
+        <router-link class="router-lin" :to="{ name: 'Login' }"
+          >Login</router-link
+        >
+      </p>
+      <h2>Your FireBlog Account</h2>
+      <div class="inputs">
+        <div class="input">
+          <input type="text" placeholder="First Name" v-model="firstName" />
+          <User class="icon" />
+        </div>
+        <div class="input">
+          <input type="text" placeholder="Last Name" v-model="lastName" />
+          <User class="icon" />
+        </div>
+        <div class="input">
+          <input type="text" placeholder="Username" v-model="username" />
+          <User class="icon" />
+        </div>
+        <div class="input">
+          <input type="text" placeholder="Email" v-model="email" />
+          <Envelope class="icon" />
+        </div>
+        <div class="input">
+          <input type="password" placeholder="Password" v-model="password" />
+          <Lock class="icon" />
+        </div>
+      </div>
+      <button>Sign Up</button>
+      <div class="angle"></div>
+    </form>
+    <div class="background"></div>
+  </div>
 </template>
 
 <script>
-  export default {};
+  import Envelope from '../assets/Icons/envelope-regular.svg';
+  import Lock from '../assets/Icons/lock-alt-solid.svg';
+  import User from '../assets/Icons/user-alt-light.svg';
+
+  export default {
+    name: 'Register',
+    components: {
+      Envelope,
+      Lock,
+      User,
+    },
+    data() {
+      return {
+        firstName: null,
+        lastName: null,
+        username: null,
+        email: null,
+        password: null,
+      };
+    },
+  };
 </script>
 
-<style lang="scss" scoped></style>>
+<style lang="scss" scoped>
+  .register {
+    h2 {
+      max-width: 350px;
+    }
+  }</style
+>>
