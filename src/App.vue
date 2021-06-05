@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
     <div class="app">
-      <Navigation />
+      <Navigation :v-if="showNavbar" />
       <router-view />
       <Footer />
     </div>
@@ -18,12 +18,31 @@
       Footer,
     },
     data() {
-      return {};
+      return {
+        showNavbar: null,
+      };
     },
-    created() {},
+    created() {
+      this.checkRoute();
+    },
+    watch: {
+      $route() {
+        this.checkRoute();
+      },
+    },
     mounted() {},
-    methods: {},
-    watch: {},
+    methods: {
+      checkRoute() {
+        const route = this.$route.name;
+        if (
+          route == 'Login' ||
+          route == 'Register' ||
+          route == 'ForgotPassword'
+        ) {
+          this.showNavbar = false;
+        } else this.showNavbar = true;
+      },
+    },
   };
 </script>
 
@@ -77,8 +96,9 @@
     }
   }
 
-  button, .router-button {
-    transition: 500ms ease  all;
+  button,
+  .router-button {
+    transition: 500ms ease all;
     cursor: pointer;
     margin-top: 24px;
     padding: 12px 24px;
@@ -89,7 +109,6 @@
 
     &:focus {
       outline: none;
-
     }
 
     &:hover {
@@ -127,8 +146,6 @@
     cursor: none !important;
     background-color: rgba(128, 128, 128, 0.5) !important;
   }
-
-
 
   .blog-card-wrap {
     position: relative;
