@@ -29,8 +29,9 @@
           <input type="password" placeholder="Password" v-model="password" />
           <Lock class="icon" />
         </div>
+        <div v-show="error" class="error">{{ this.errorMsg }}</div>
       </div>
-      <button>Sign Up</button>
+      <button @click.prevent="register">Sign Up</button>
       <div class="angle"></div>
     </form>
     <div class="background"></div>
@@ -41,6 +42,9 @@
   import Envelope from '../assets/Icons/envelope-regular.svg';
   import Lock from '../assets/Icons/lock-alt-solid.svg';
   import User from '../assets/Icons/user-alt-light.svg';
+  import firebase from 'firebase/app';
+  import 'firebase/auth';
+  import db from '../firebase/firebaseInit';
 
   export default {
     name: 'Register',
@@ -51,12 +55,47 @@
     },
     data() {
       return {
-        firstName: null,
-        lastName: null,
-        username: null,
-        email: null,
-        password: null,
+        firstName: '',
+        lastName: '',
+        username: '',
+        email: '',
+        password: '',
+        error: null,
+        errorMsg: '',
       };
+    },
+    methods: {
+      async register() {
+        const { firstName, lastName, email, username, password } = this;
+        if (
+          firstName !== '' &&
+          lastName !== '' &&
+          email !== '' &&
+          username !== '' &&
+          password !== ''
+        ) {
+          this.error = false;
+          this.errorMsg = '';
+          const firebaseAuth = await firebase.auth();
+          const createUser = firebaseAuth.createUserWithEmailAndPassword(
+            email,
+            password
+          );
+          const res = await createUser;
+          const database = db.collection('users').doc(res.user.uid);
+          await database.set({
+            firstName,
+            lastName,
+            email,
+          });
+
+          this.$router.push({ name: 'Home' });
+          return;
+        }
+        this.error = true;
+        this.errorMsg = 'Please fill out all the fields';
+        return;
+      },
     },
   };
 </script>

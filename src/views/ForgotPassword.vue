@@ -36,7 +36,7 @@
     data() {
       return {
         email: null,
-        isModalActive: true,
+        isModalActive: false,
         modalMessage: '',
         loading: null,
       };
