@@ -15,6 +15,45 @@
             >Login/Register</router-link
           >
         </ul>
+        <div
+          v-if="user"
+          @click="toggleProfileMenu"
+          class="profile"
+          ref="profile"
+        >
+          <span>{{ this.$store.state.profileInitials }}</span>
+          <div v-show="profileMenu" class="profile-menu">
+            <div class="info">
+              <p class="initilas">{{ this.$store.state.profileInitials }}</p>
+              <div class="right">
+                <p>
+                  {{ this.$store.state.profileFirstName }}
+                  {{ this.$store.state.profileLastName }}
+                </p>
+                <p>{{ this.$store.state.profileUsername }}</p>
+                <p>{{ this.$store.state.profileEmail }}</p>
+              </div>
+            </div>
+            <div class="options">
+              <div class="option">
+                <router-link to="#" class="option">
+                  <UserIcon class="icon" />
+                  <p>Profile</p>
+                </router-link>
+              </div>
+              <div class="option">
+                <router-link to="#" class="option">
+                  <AdminIcon class="icon" />
+                  <p>Admin</p>
+                </router-link>
+              </div>
+              <div @click="signOut" class="option">
+                <SignOutIcon class="icon" />
+                <p>Sign Out</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
     <menuIcon @click="toggleMobileNav" v-show="mobile" class="menu-icon" />
@@ -33,16 +72,25 @@
 
 <script>
   import menuIcon from '../assets/Icons/bars-regular.svg';
+  import UserIcon from '../assets/Icons/user-alt-light.svg';
+  import AdminIcon from '../assets/Icons/user-crown-light.svg';
+  import SignOutIcon from '../assets/Icons/sign-out-alt-regular.svg';
+  import firebase from 'firebase/app';
+  import 'firebase/auth';
   export default {
     namd: 'navigation',
     components: {
       menuIcon,
+      UserIcon,
+      AdminIcon,
+      SignOutIcon,
     },
     data() {
       return {
         mobile: null,
         mobileNav: null,
         windowWidth: null,
+        profileMenu: null,
       };
     },
     created() {
@@ -61,8 +109,25 @@
         return;
       },
 
+      toggleProfileMenu(e) {
+        if (e.target == this.$refs.profile) {
+          this.profileMenu = !this.profileMenu;
+        }
+      },
+
       toggleMobileNav() {
         this.mobileNav = !this.mobileNav;
+      },
+
+      signOut() {
+        firebase.auth().signOut();
+        window.location.reload();
+      },
+    },
+
+    computed: {
+      user() {
+        return this.$store.state.user;
       },
     },
   };
