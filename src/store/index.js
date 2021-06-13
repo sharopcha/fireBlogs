@@ -40,7 +40,7 @@ export default new Vuex.Store({
     profileEmail: '',
     profileLastName: '',
     profileFirstName: '',
-    profileUsername: '',
+    profileUsername: 'sharopcha',
     profileId: '',
     profileInitials: '',
   },
@@ -67,6 +67,15 @@ export default new Vuex.Store({
           state.profileFirstName.match(/(\b\S)?/g).join('') +
           state.profileLastName.match(/(\b\S)?/g).join('');
     },
+    changeFirstName(state, payload) {
+      state.profileFirstName = payload;
+    },
+    changeLastName(state, payload) {
+      state.profileLastName = payload;
+    },
+    changeUsername(state, payload) {
+      state.profileUsername = payload;
+    },
   },
   actions: {
     async getCurrentUser({ commit }) {
@@ -74,7 +83,19 @@ export default new Vuex.Store({
         .collection('users')
         .doc(firebase.auth().currentUser.uid);
       const res = await database.get();
+
       commit('setProfileInfo', res);
+      commit('setProfileInitials');
+    },
+
+    async updateUserSettings({ commit, state }) {
+      const database = db.collection('users').doc(state.profileId);
+      await database.update({
+        firstName: state.profileFirstName,
+        lastName: state.profileLastName,
+        username: state.profileUsername,
+      });
+
       commit('setProfileInitials');
     },
   },

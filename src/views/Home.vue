@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <BlogPost :post="welcomeScreen" />
+    <BlogPost v-if="!user" :post="welcomeScreen" />
     <BlogPost
       :post="post"
       v-for="(post, index) in sampleBlogPost"
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="updates">
+    <div v-if="!user" class="updates">
       <div class="container">
         <h2>Never miss new posts</h2>
         <router-link class="router-button" to="#">
@@ -32,13 +32,13 @@
 <script>
   import BlogPost from '../components/BlogPost';
   import BlogCard from '../components/BlogCard';
-  import Arrow from '../assets/Icons/arrow-right-light.svg'
+  import Arrow from '../assets/Icons/arrow-right-light.svg';
   export default {
     name: 'Home',
     components: {
       BlogPost,
       BlogCard,
-      Arrow
+      Arrow,
     },
     data() {
       return {
@@ -65,9 +65,13 @@
     },
     computed: {
       sampleBlogCards() {
-        return this.$store.state.sampleBlogCards
-      }
-    }
+        return this.$store.state.sampleBlogCards;
+      },
+
+      user() {
+        return this.$store.state.user;
+      },
+    },
   };
 </script>
 
@@ -86,7 +90,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      
+
       @media (min-width: 800px) {
         padding: 125px 25px;
         flex-direction: row;

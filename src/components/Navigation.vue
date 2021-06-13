@@ -11,7 +11,7 @@
           <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
           <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
           <router-link class="link" to="#">Create Post</router-link>
-          <router-link class="link" :to="{ name: 'Login' }"
+          <router-link v-if="!user" class="link" :to="{ name: 'Login' }"
             >Login/Register</router-link
           >
         </ul>
@@ -36,13 +36,13 @@
             </div>
             <div class="options">
               <div class="option">
-                <router-link to="#" class="option">
+                <router-link :to="{ name: 'Profile' }" class="option">
                   <UserIcon class="icon" />
                   <p>Profile</p>
                 </router-link>
               </div>
               <div class="option">
-                <router-link to="#" class="option">
+                <router-link :to="{ name: 'Admin' }" class="option">
                   <AdminIcon class="icon" />
                   <p>Admin</p>
                 </router-link>
@@ -62,7 +62,7 @@
         <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
         <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
         <router-link class="link" to="#">Create Post</router-link>
-        <router-link class="link" :to="{ name: 'Login' }"
+        <router-link v-if="!user" class="link" :to="{ name: 'Login' }"
           >Login/Register</router-link
         >
       </ul>
