@@ -13,13 +13,14 @@
           />
         </div>
         <span>{{ this.functionMsg }}</span>
-        <button class="button">Submit</button>
+        <button @click="test" class="button">Submit</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import firebase from 'firebase/app';
   export default {
     name: 'Admin',
     data() {
@@ -27,6 +28,14 @@
         adminEmail: '',
         functionMsg: null,
       };
+    },
+    methods: {
+      async test() {
+        const user = firebase.auth().currentUser;
+        //  const token = yield call([user, user.getIdToken], true)
+
+        console.log(user);
+      },
     },
   };
 </script>
