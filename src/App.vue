@@ -114,6 +114,7 @@
     padding: 12px 24px;
     background-color: #303030;
     color: #fff;
+    border: none;
     border-radius: 20px;
     text-transform: uppercase;
 
