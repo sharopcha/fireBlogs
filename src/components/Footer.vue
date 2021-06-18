@@ -61,7 +61,7 @@
         return this.$store.state.user;
       },
       admin() {
-        return this.$store.state.profileAdmin;
+        return this.$store.state.isAdmin;
       },
     },
   };
