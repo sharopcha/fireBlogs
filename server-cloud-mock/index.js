@@ -1,9 +1,11 @@
 const express = require('express');
 const admin = require('firebase-admin');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -23,7 +25,7 @@ admin.initializeApp({
   }),
 });
 
-app.post('/', async (req, res) => {
+app.post('/set-admin', async (req, res) => {
   const email = req.body.email;
 
   try {
@@ -35,7 +37,9 @@ app.post('/', async (req, res) => {
       .status(200)
       .json({ success: true, msg: `User ${user.email} has been made admin` });
   } catch (error) {
-    console.error(error);
+    res
+      .status(500)
+      .json({ success: false, msg: 'Something went wrong. Please try again' });
   }
 });
 

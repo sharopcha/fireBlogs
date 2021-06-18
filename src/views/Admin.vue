@@ -13,14 +13,14 @@
           />
         </div>
         <span>{{ this.functionMsg }}</span>
-        <button @click="test" class="button">Submit</button>
+        <button @click="setAdminUser" class="button">Submit</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import firebase from 'firebase/app';
+  import axios from 'axios';
   export default {
     name: 'Admin',
     data() {
@@ -30,11 +30,11 @@
       };
     },
     methods: {
-      async test() {
-        const user = firebase.auth().currentUser;
-        //  const token = yield call([user, user.getIdToken], true)
-
-        console.log(user);
+      async setAdminUser() {
+        const res = await axios.post('http://localhost:3000/set-admin', {
+          email: this.adminEmail,
+        });
+        this.functionMsg = res.data.msg;
       },
     },
   };
