@@ -13,13 +13,14 @@
           />
         </div>
         <span>{{ this.functionMsg }}</span>
-        <button class="button">Submit</button>
+        <button @click="setAdminUser" class="button">Submit</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import axios from 'axios';
   export default {
     name: 'Admin',
     data() {
@@ -27,6 +28,14 @@
         adminEmail: '',
         functionMsg: null,
       };
+    },
+    methods: {
+      async setAdminUser() {
+        const res = await axios.post('http://localhost:3000/set-admin', {
+          email: this.adminEmail,
+        });
+        this.functionMsg = res.data.msg;
+      },
     },
   };
 </script>
