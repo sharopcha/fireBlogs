@@ -9,6 +9,7 @@
         <div class="upload-file">
           <label for="blogPhoto">Upload Cover Photo</label>
           <input
+            @change="fileChange"
             type="file"
             id="blogPhoto"
             ref="blogPhoto"
@@ -16,7 +17,7 @@
           />
           <button
             class="preview"
-            :class="{ 'button-inactive': !this.$store.state.blogPhotoURL }"
+            :class="{ 'button-inactive': this.$store.state.blogPhotoURL }"
           >
             Preview Photo
           </button>
@@ -47,6 +48,7 @@
     name: 'CreatePost',
     data() {
       return {
+        file: null,
         error: null,
         errorMsg: null,
         editorSettings: {
@@ -55,6 +57,14 @@
           },
         },
       };
+    },
+    methods: {
+      fileChange() {
+        this.file = this.$refs.blogPhoto.files[0];
+        const fileName = this.file.name;
+        this.$store.commit('fileNameChange', fileName);
+        this.$store.commit('createFileURL', URL.createObjectURL(this.file));
+      },
     },
     computed: {
       profileID() {

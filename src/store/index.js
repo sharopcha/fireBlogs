@@ -97,6 +97,14 @@ export default new Vuex.Store({
     updateBlogTitle(state, payload) {
       state.blogTitle = payload;
     },
+
+    fileNameChange(state, payload) {
+      state.blogPhotoName = payload;
+    },
+
+    createFileURL(state, payload) {
+      state.blogPhotoFileURL = payload;
+    },
   },
   actions: {
     async getCurrentUser({ commit }, user) {
