@@ -35,7 +35,6 @@ export default new Vuex.Store({
       },
     ],
     editMode: false,
-    editPost: null,
     user: null,
     isAdmin: null,
     profileEmail: '',
@@ -44,6 +43,12 @@ export default new Vuex.Store({
     profileUsername: 'sharopcha',
     profileId: '',
     profileInitials: '',
+    blogHTML: 'Write your blog title here...',
+    blogTitle: '',
+    blogPhotoName: '',
+    blogPhotoFileURL: null,
+    blogPhotoPreview: null,
+    editPost: null,
   },
   mutations: {
     toggleEditMode(state, payload) {
@@ -72,14 +77,25 @@ export default new Vuex.Store({
           state.profileFirstName.match(/(\b\S)?/g).join('') +
           state.profileLastName.match(/(\b\S)?/g).join('');
     },
+
     changeFirstName(state, payload) {
       state.profileFirstName = payload;
     },
+
     changeLastName(state, payload) {
       state.profileLastName = payload;
     },
+
     changeUsername(state, payload) {
       state.profileUsername = payload;
+    },
+
+    newBlogPost(state, payload) {
+      state.blogHTML = payload;
+    },
+
+    updateBlogTitle(state, payload) {
+      state.blogTitle = payload;
     },
   },
   actions: {
