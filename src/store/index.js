@@ -55,6 +55,10 @@ export default new Vuex.Store({
       state.editMode = payload;
     },
 
+    togglePreviewModal(state) {
+      state.blogPhotoPreview = !state.blogPhotoPreview;
+    },
+
     updateUser(state, payload) {
       state.user = payload;
     },
