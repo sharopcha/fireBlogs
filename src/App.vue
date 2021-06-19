@@ -26,7 +26,7 @@
     },
     created() {
       this.checkRoute();
-
+      this.$store.dispatch('getPosts');
       firebase.auth().onAuthStateChanged((user) => {
         this.$store.commit('updateUser', user);
 

@@ -8,10 +8,10 @@
         <Trash class="delete" />
       </div>
     </div>
-    <img :src="require(`../assets/blogCards/${post.blogCoverPhoto}`)" alt="" />
+    <img :src="post.blogCoverPhoto" alt="" />
     <div class="info">
       <h4>{{ post.blogTitle }}</h4>
-      <h6>Posten on: {{ post.blogDate }}</h6>
+      <h6>Posten on: {{ this.setDate }}</h6>
       <router-link class="link" to="#"
         >View the post <Arrow class="arrow "
       /></router-link>
@@ -34,6 +34,11 @@
     computed: {
       editMode() {
         return this.$store.state.editMode;
+      },
+      setDate() {
+        return new Date(this.post.blogDate).toLocaleString('en-us', {
+          dateStyle: 'long',
+        });
       },
     },
   };

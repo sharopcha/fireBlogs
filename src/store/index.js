@@ -34,6 +34,8 @@ export default new Vuex.Store({
         blogDate: '8/06/2021',
       },
     ],
+    blogPosts: [],
+    postLoaded: null,
     editMode: false,
     user: null,
     isAdmin: null,
@@ -50,6 +52,17 @@ export default new Vuex.Store({
     blogPhotoPreview: null,
     editPost: null,
   },
+
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0, 2);
+    },
+
+    blogPostCards(state) {
+      return state.blogPosts.slice(2, 6);
+    },
+  },
+
   mutations: {
     toggleEditMode(state, payload) {
       state.editMode = payload;
@@ -110,6 +123,7 @@ export default new Vuex.Store({
       state.blogPhotoFileURL = payload;
     },
   },
+
   actions: {
     async getCurrentUser({ commit }, user) {
       const database = await db
@@ -134,6 +148,27 @@ export default new Vuex.Store({
       });
 
       commit('setProfileInitials');
+    },
+
+    async getPosts({ state }) {
+      const collection = await db
+        .collection('blogPosts')
+        .orderBy('date', 'desc');
+      const results = await collection.get();
+      results.forEach((doc) => {
+        if (!state.blogPosts.some((post) => post.blogId == doc.id)) {
+          const data = {
+            blogId: doc.data().blogID,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().CoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date,
+          };
+
+          state.blogPosts.push(data);
+        }
+      });
+      state.postLoaded = true;
     },
   },
   modules: {},

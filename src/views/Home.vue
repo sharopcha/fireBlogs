@@ -3,18 +3,14 @@
     <BlogPost v-if="!user" :post="welcomeScreen" />
     <BlogPost
       :post="post"
-      v-for="(post, index) in sampleBlogPost"
+      v-for="(post, index) in blogPostFeeds"
       :key="index"
     />
     <div class="blog-card-wrap">
       <div class="container">
         <h3>View recent blogs</h3>
         <div class="blog-cards">
-          <BlogCard
-            :post="post"
-            v-for="(post, i) in sampleBlogCards"
-            :key="i"
-          />
+          <BlogCard :post="post" v-for="(post, i) in blogCrads" :key="i" />
         </div>
       </div>
     </div>
@@ -49,23 +45,14 @@
           welcomeScreen: true,
           photo: 'coding',
         },
-        sampleBlogPost: [
-          {
-            title: 'This is a first title',
-            blogHTML: 'This is a blog content',
-            blogCoverPhoto: 'beautiful-stories',
-          },
-          {
-            title: 'This is a second title',
-            blogHTML: 'This is a blog content for second blog',
-            blogCoverPhoto: 'designed-for-everyone',
-          },
-        ],
       };
     },
     computed: {
-      sampleBlogCards() {
-        return this.$store.state.sampleBlogCards;
+      blogCrads() {
+        return this.$store.getters.blogPostCards;
+      },
+      blogPostFeeds() {
+        return this.$store.getters.blogPostsFeed;
       },
 
       user() {
