@@ -10,7 +10,7 @@
     </div>
     <img :src="post.blogCoverPhoto" alt="" />
     <div class="info">
-      <h4>{{ post.blogTitle }}</h4>
+      <h4>{{ this.truncate }}</h4>
       <h6>Posten on: {{ this.setDate }}</h6>
       <router-link class="link" to="#"
         >View the post <Arrow class="arrow "
@@ -39,6 +39,11 @@
         return new Date(this.post.blogDate).toLocaleString('en-us', {
           dateStyle: 'long',
         });
+      },
+      truncate() {
+        return this.post.blogTitle.length > 65
+          ? `${this.post.blogTitle.substring(0, 65)}...`
+          : this.post.blogTitle;
       },
     },
   };
