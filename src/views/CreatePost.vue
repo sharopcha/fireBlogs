@@ -1,6 +1,7 @@
 <template>
   <div class="create-post">
     <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
+    <Loading v-show="loading" />
     <div class="container">
       <div :class="{ invisible: !error }" class="error-message">
         <p><span>Error: </span>{{ this.errorMsg }}</p>
@@ -50,6 +51,7 @@
   import 'firebase/storage';
   import db from '../firebase/firebaseInit';
   import BlogCoverPreview from '../components/BlogCoverPreview.vue';
+  import Loading from '../components/Loading.vue';
   window.Quill = Quill;
   const ImageResize = require('quill-image-resize-module').default;
   Quill.register('modules/imageResize', ImageResize);
@@ -57,12 +59,14 @@
     name: 'CreatePost',
     components: {
       BlogCoverPreview,
+      Loading,
     },
     data() {
       return {
         file: null,
         error: null,
         errorMsg: null,
+        loading: null,
         editorSettings: {
           modules: {
             imageResize: {},
@@ -105,6 +109,7 @@
         if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0) {
           console.log(this.$refs.blogPhoto);
           if (this.file) {
+            this.loading = true;
             const storageRef = firebase.storage().ref();
             const docRef = storageRef.child(
               `documents/BlogCoverPhotos/${this.$store.state.blogPhotoName}`
@@ -116,6 +121,7 @@
               },
               (err) => {
                 console.log(err);
+                this.loading = false;
               },
               async () => {
                 const downloadURL = await docRef.getDownloadURL();
@@ -131,6 +137,7 @@
                   profileID: this.profileID,
                   date: timestamp,
                 });
+                this.loading = false;
                 this.$router.push({ name: 'ViewBlog' });
               }
             );
