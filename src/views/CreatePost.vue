@@ -35,7 +35,7 @@
         />
       </div>
       <div class="blog-actions">
-        <button>Publish Blog</button>
+        <button @click="uploadBlog">Publish Blog</button>
         <router-link class="router-button" :to="{ name: 'BlogPreview' }"
           >Post Preview</router-link
         >
@@ -48,6 +48,7 @@
   import Quill from 'quill';
   import firebase from 'firebase/app';
   import 'firebase/storage';
+  import db from '../firebase/firebaseInit';
   import BlogCoverPreview from '../components/BlogCoverPreview.vue';
   window.Quill = Quill;
   const ImageResize = require('quill-image-resize-module').default;
@@ -100,10 +101,62 @@
           }
         );
       },
+      uploadBlog() {
+        if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0) {
+          console.log(this.$refs.blogPhoto);
+          if (this.file) {
+            const storageRef = firebase.storage().ref();
+            const docRef = storageRef.child(
+              `documents/BlogCoverPhotos/${this.$store.state.blogPhotoName}`
+            );
+            docRef.put(this.file).on(
+              'state_changed',
+              (snapshot) => {
+                console.log(snapshot);
+              },
+              (err) => {
+                console.log(err);
+              },
+              async () => {
+                const downloadURL = await docRef.getDownloadURL();
+                const timestamp = await Date.now();
+                const database = await db.collection('blogPosts').doc();
+
+                await database.set({
+                  blogID: database.id,
+                  blogHTML: this.blogHTML,
+                  CoverPhoto: downloadURL,
+                  blogCoverPhotoName: this.blogCoverPhotoName,
+                  blogTitle: this.blogTitle,
+                  profileID: this.profileID,
+                  date: timestamp,
+                });
+                this.$router.push({ name: 'ViewBlog' });
+              }
+            );
+          }
+
+          this.error = true;
+          this.errorMsg = 'Please make sure that you uploaded blog cover photo';
+          setTimeout(() => {
+            this.error = false;
+          }, 5000);
+          return;
+        }
+
+        this.error = true;
+        this.errorMsg =
+          'Please make sure you wrote blog title and blog content';
+        setTimeout(() => {
+          this.error = false;
+        }, 5000);
+
+        return;
+      },
     },
     computed: {
       profileID() {
-        return this.$store.state.profileID;
+        return this.$store.state.profileId;
       },
 
       blogCoverPhotoName() {
@@ -116,7 +169,7 @@
         },
 
         set(payload) {
-          this.$store.commit('updateBlogTitel', payload);
+          this.$store.commit('updateBlogTitle', payload);
         },
       },
       blogHTML: {
